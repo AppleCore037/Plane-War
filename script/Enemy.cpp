@@ -114,8 +114,8 @@ SmallEnemy::SmallEnemy()
 		anim_die->set_loop(false);
 		anim_die->set_on_finished([this]()
 			{
-				auto game_scene = SceneManager::instance()->find_scene("game_scene");
-				dynamic_cast<GameScene*>(game_scene)->plus_score(this->reward);
+				auto game_scene = SceneManager::instance()->find_scene<GameScene>("game_scene");
+				game_scene->plus_score(this->reward);
 				this->get_property().can_remove = true;
 			});
 
@@ -151,7 +151,7 @@ MiddleEnemy::MiddleEnemy()
 		anim_die->set_loop(false);
 		anim_die->set_on_finished([this]()
 			{
-				auto game_scene = dynamic_cast<GameScene*>(SceneManager::instance()->find_scene("game_scene"));
+				auto game_scene = SceneManager::instance()->find_scene<GameScene>("game_scene");
 
 				game_scene->plus_score(this->reward);
 				game_scene->mid_enemy_cnt--;
@@ -191,7 +191,7 @@ BigEnemy::BigEnemy()
 		anim_die->set_loop(false);
 		anim_die->set_on_finished([this]()
 			{
-				auto game_scene = dynamic_cast<GameScene*>(SceneManager::instance()->find_scene("game_scene"));
+				auto game_scene = SceneManager::instance()->find_scene<GameScene>("game_scene");
 
 				game_scene->plus_score(this->reward);
 				game_scene->big_enemy_cnt--;

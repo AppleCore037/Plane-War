@@ -108,7 +108,7 @@ void Player::on_update(float delta)
 		Mix_PlayChannel(-1, ResourcesManager::instance()->find_audio("use_bomb"), 0);
 		this->bomb_cnt--;
 		this->used_bomb = false;
-		Game::Game_Camera->shake(15.0f, 1.1f);
+		Game::Game_Camera->shake(15.0f, 1.2f);
 	}
 
 	// 射击子弹逻辑
