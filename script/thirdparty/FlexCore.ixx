@@ -311,9 +311,12 @@ export namespace fce
 		// 获取SDL形式的矩形
 		const SDL_FRect& get_SDLRect() const
 		{
-			SDL_FRect _rect = { position.x, position.y, size.w, size.h };
-			return _rect;
+			SDLRect = { position.x, position.y, size.w, size.h };
+			return SDLRect;
 		}
+
+	private:
+		mutable SDL_FRect SDLRect;	// SDL形式矩形
 	};
 
 	// 碰撞信息上下文
@@ -2217,14 +2220,23 @@ export namespace fce
 		}
 
 		// 查找场景
-		Scene* find_scene(const std::string& name)
+		template <typename T = Scene>
+		T* find_scene(const std::string& name)
 		{
 			if (scene_pool.find(name) == scene_pool.end())
 			{
 				std::string _info = "[find_scene()]: Scene \"" + name + "\" is not exist!";
 				throw custom_error("Scene Manager Error", _info.c_str());
 			}
-			return scene_pool[name];
+
+			T* _result = dynamic_cast<T*>(scene_pool[name]);
+			if (_result == nullptr)
+			{
+				std::string _info = std::format("<{}> --> <{}>", typeid(Scene*).name(), typeid(T*).name());
+				throw custom_error("Scene Manager Error", "[find_scene()]: Illegal polymorphic type conversion!\n" + _info);
+			}
+
+			return _result;
 		}
 
 		// 处理输入
